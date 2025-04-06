@@ -2,7 +2,7 @@
 import random
 
 # Will the line below print when you import function.py into main.py?
-# print("Inside function.py")
+# print("Inside function.py")  
 
 
 def use_loot(belt, health_points):

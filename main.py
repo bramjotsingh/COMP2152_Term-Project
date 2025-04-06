@@ -1,6 +1,6 @@
 import random
 import os
-import platform
+import platform 
 from hero import Hero
 from monster import Monster
 import functions as functions_lab06_solution
