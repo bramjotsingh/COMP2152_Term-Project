@@ -1,6 +1,6 @@
 import random
 import os
-import platform 
+import platform
 from hero import Hero
 from monster import Monster
 import functions as functions_lab06_solution
@@ -31,12 +31,6 @@ functions_lab06_solution.adjust_combat_strength(hero.combat_strength, monster.co
 input("Roll for your health points (Press enter)")
 hero.health_points = random.randint(1, 20)
 print("Hero health:", hero.health_points)
-
-# Check if hero qualifies for the Treasure Room
-if hero.health_points > 10 and hero.combat_strength > 3:
-    belt = functions_lab06_solution.enter_treasure_room(hero, belt)
-else:
-    print("\nYou do not qualify to enter the Treasure Room. Stay strong!\n")
 input("Roll for monster health points (Press enter)")
 monster.health_points = random.randint(1, 20)
 print("Monster health:", monster.health_points)

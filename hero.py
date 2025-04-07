@@ -4,7 +4,7 @@ import random
 
 class Hero(Character):
     def __init__(self):
-        super().__init__()  
+        super().__init__()
         print("Hero created with combat strength:", self.combat_strength, "and health points:", self.health_points)
 
     def __del__(self):

@@ -2,7 +2,7 @@
 import random
 
 # Will the line below print when you import function.py into main.py?
-# print("Inside function.py")  
+# print("Inside function.py")
 
 
 def use_loot(belt, health_points):
@@ -185,13 +185,4 @@ def adjust_combat_strength(combat_strength, m_combat_strength):
             print("    |    ... Based on your previous game, neither the hero nor the monster's combat strength will be increased")
 
 
-# Bonus Feature: Treasure Room
-def enter_treasure_room(hero, belt):
-    print("\n*** Treasure Room ***")
-    print("You feel a surge of power as you enter a hidden room full of treasures!")
-    treasure_items = ["Golden Sword", "Dragon Armor", "Elixir of Life"]
-    treasure = random.choice(treasure_items)
-    belt.append(treasure)
-    print("You found a special treasure:", treasure)
-    print("Updated belt:", belt)
-    return belt
+

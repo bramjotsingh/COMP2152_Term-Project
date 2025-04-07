@@ -9,7 +9,7 @@ class Character:
     def __del__(self):
         print("The Character object is being destroyed by the garbage collector")
 
-    @property  
+    @property
     def combat_strength(self):
         return self._combat_strength
 
