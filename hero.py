@@ -5,7 +5,11 @@ import random
 class Hero(Character):
     def __init__(self):
         super().__init__()
-        print("Hero created with combat strength:", self.combat_strength, "and health points:", self.health_points)
+        # Extra hero attributes to hold values parsed form existing runs
+        # Holds default values in case user is not continuing a run
+        self.win_streak = 0
+        self.short_name = ""
+        print("New hero has been created with combat strength:", self.combat_strength, "and health points:", self.health_points)
 
     def __del__(self):
         print("The Hero object is being destroyed by the garbage collector")
