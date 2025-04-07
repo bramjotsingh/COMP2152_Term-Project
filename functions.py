@@ -113,9 +113,10 @@ def load_hero_state(short_name):
         print("Error parsing saved hero state:", e)
         return None
 
-def save_game(winner, hero, num_stars=0):
+def save_game(winner, hero):
     with open("save.txt", "a") as file:
         if winner == "Hero":
+            print(f"    |    Congratulations, you have won! At the start of your next adventure, you may choose to continue with the hero {hero.short_name}!")
             # Increase win streak if one exists, otherwise set to 1.
             if hasattr(hero, "win_streak"):
                 hero.win_streak += 1
@@ -124,6 +125,7 @@ def save_game(winner, hero, num_stars=0):
             # Save the hero's state on a win, in the expected format.
             file.write(f"Hero {hero.short_name} | Health: {hero.health_points} | Strength: {hero.combat_strength} | WinStreak: {hero.win_streak}\n")
         elif winner == "Monster":
+            print(f"    |    Your hero has been defeated; this version of {hero.short_name} can no longer continue. Better luck next time!")
             # Reset win streak upon defeat, then save to file.
             if hasattr(hero, "win_streak"):
                 hero.win_streak = 0

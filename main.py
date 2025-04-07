@@ -154,7 +154,4 @@ while hero.health_points > 0 and monster.health_points > 0:
 
 # Determine winner and assign stars
 winner = "Hero" if monster.health_points == 0 else "Monster"
-num_stars = 3 if winner == "Hero" else 1
-
-print("Hero", hero.short_name, "gets", "*" * num_stars)
-functions_lab06_solution.save_game(winner, hero, num_stars)
+functions_lab06_solution.save_game(winner, hero)
