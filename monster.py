@@ -12,6 +12,23 @@ class Monster(Character):
         super().__del__()
 
     def monster_attacks(self, hero):
+        ascii_image = """                                                                 
+           @@@@ @                           
+      (     @*&@  ,                         
+    @               %                       
+     &#(@(@%@@@@@*   /                      
+      @@@@@.                                
+               @       /                    
+                %         @                 
+            ,(@(*/           %              
+               @ (  .@#                 @   
+                          @           .@@. @
+                   @         ,              
+                      @       @ .@          
+                             @              
+                          *(*  *      
+             """
+        print(ascii_image)
         print("    |    Monster's Claw (" + str(self.combat_strength) + ") ---> Player (" + str(hero.health_points) + ")")
         if self.combat_strength >= hero.health_points:
             hero.health_points = 0

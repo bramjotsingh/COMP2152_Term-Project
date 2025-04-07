@@ -2,7 +2,7 @@
 import random
 
 # Will the line below print when you import function.py into main.py?
-# print("Inside function.py")  
+# print("Inside function.py")
 
 
 def use_loot(belt, health_points):
@@ -16,7 +16,7 @@ def use_loot(belt, health_points):
         print("    |    You used " + first_item + " to up your health to " + str(health_points))
     elif first_item in bad_loot_options:
         health_points = max(0, (health_points - 2))
-        print("    |    You used " + first_item + " to hurt your health to " + str(health_points))
+        print("    |    You used " + first_item + " which hurt your health to " + str(health_points))
     else:
         print("    |    You used " + first_item + " but it's not helpful")
     return belt, health_points
@@ -45,75 +45,8 @@ def collect_loot(loot_options, belt):
     print("    |    Your belt: ", belt)
     return loot_options, belt
 
-
-# Hero's Attack Function
-def hero_attacks(combat_strength, m_health_points):
-    ascii_image = """
-                                @@   @@ 
-                                @    @  
-                                @   @   
-               @@@@@@          @@  @    
-            @@       @@        @ @@     
-           @%         @     @@@ @       
-            @        @@     @@@@@     
-               @@@@@        @@       
-               @    @@@@                
-          @@@ @@                        
-       @@     @                         
-   @@*       @                          
-   @        @@                          
-           @@                                                    
-         @   @@@@@@@                    
-        @            @                  
-      @              @                  
-
-  """
-    print(ascii_image)
-    print("    |    Player's weapon (" + str(combat_strength) + ") ---> Monster (" + str(m_health_points) + ")")
-    if combat_strength >= m_health_points:
-        # Player was strong enough to kill monster in one blow
-        m_health_points = 0
-        print("    |    You have killed the monster")
-    else:
-        # Player only damaged the monster
-        m_health_points -= combat_strength
-
-        print("    |    You have reduced the monster's health to: " + str(m_health_points))
-    return m_health_points
-
-
-# Monster's Attack Function
-def monster_attacks(m_combat_strength, health_points):
-    ascii_image2 = """                                                                 
-           @@@@ @                           
-      (     @*&@  ,                         
-    @               %                       
-     &#(@(@%@@@@@*   /                      
-      @@@@@.                                
-               @       /                    
-                %         @                 
-            ,(@(*/           %              
-               @ (  .@#                 @   
-                          @           .@@. @
-                   @         ,              
-                      @       @ .@          
-                             @              
-                          *(*  *      
-             """
-    print(ascii_image2)
-    print("    |    Monster's Claw (" + str(m_combat_strength) + ") ---> Player (" + str(health_points) + ")")
-    if m_combat_strength >= health_points:
-        # Monster was strong enough to kill player in one blow
-        health_points = 0
-        print("    |    Player is dead")
-    else:
-        # Monster only damaged the player
-        health_points -= m_combat_strength
-        print("    |    The monster has reduced Player's health to: " + str(health_points))
-    return health_points
-
 # Recursion
-# You can choose to go crazy, but it will reduce your health points by 5
+# You can choose to go crazy, but it will reduce your health points by the number of dream levels
 def inception_dream(num_dream_lvls):
     num_dream_lvls = int(num_dream_lvls)
     # Base Case
@@ -134,57 +67,6 @@ def inception_dream(num_dream_lvls):
         # 1 + 1 + 1 + 1 + 2
         return 1 + int(inception_dream(num_dream_lvls - 1))
 
-
-# Lab 06 - Question 3 and 4
-def save_game(winner, hero_name="", num_stars=0):
-    with open("save.txt", "a") as file:
-        if winner == "Hero":
-            file.write(f"Hero {hero_name} has killed a monster and gained {num_stars} stars.\n")
-        elif winner == "Monster":
-            file.write("Monster has killed the hero previously\n")
-
-# Lab 06 - Question 5a
-def load_game():
-    try:
-        with open("save.txt", "r") as file:
-            print("    |    Loading from saved file ...")
-            lines = file.readlines()
-            if lines:
-                last_line = lines[-1].strip()
-                print(last_line)
-
-                # Count total monsters killed across all saved games
-                total_kills = 0
-                for line in lines:
-                    if "Total monsters killed so far:" in line:
-                        try:
-                            total_kills += int(line.strip().split(":")[-1].strip())
-                        except ValueError:
-                            continue  # in case of bad formatting
-
-                print(f"    |    Total monsters killed in all games: {total_kills}")
-                return last_line, total_kills
-    except FileNotFoundError:
-        print("No previous game found. Starting fresh.")
-        return None, 0
-
-
-# Lab 06 - Question 5b
-def adjust_combat_strength(combat_strength, m_combat_strength):
-    last_game, total_kills = load_game()
-    if last_game:
-        if "Hero" in last_game and "gained" in last_game:
-            num_stars = int(last_game.split()[-2])
-            if num_stars > 3 or total_kills > 10:
-                print("    |    ... Increasing the monster's combat strength since you won a lot")
-                m_combat_strength += 1
-        elif "Monster has killed the hero" in last_game:
-            combat_strength += 1
-            print("    |    ... Increasing the hero's combat strength since you lost last time")
-        else:
-            print("    |    ... Based on your previous game, neither the hero nor the monster's combat strength will be increased")
-
-
 # Bonus Feature: Treasure Room
 def enter_treasure_room(hero, belt):
     print("\n*** Treasure Room ***")
@@ -195,3 +77,76 @@ def enter_treasure_room(hero, belt):
     print("You found a special treasure:", treasure)
     print("Updated belt:", belt)
     return belt
+
+def load_hero_state(short_name):
+    try:
+        with open("save.txt", "r") as file:
+            lines = file.readlines()
+    except FileNotFoundError:
+        return None
+
+    # Filter for all lines that match the provided short name
+    matching_lines = [line.strip() for line in lines if line.startswith(f"Hero {short_name}")]
+    # If no matching lines, exits the function
+    if not matching_lines:
+        return None
+    # Find the last record for the hero
+    # If the last record contains "lost", the hero cannot continue
+    last_record = matching_lines[-1].strip()
+    if "lost" in last_record:
+        print("The requested hero died on their most recent adventure. Cannot continue.")
+        return None
+    # Expected format provided by save function: "Hero {short_name} | Health: {health_points} | Strength: {combat_strength} | WinStreak: {win_streak}"
+    try:
+        # If the last record for a hero is not a loss, parse the health points, combat strength, and win streak
+        parts = last_record.split("|")
+        health_part = parts[1].strip()      # "Health: {health_points}"
+        strength_part = parts[2].strip()    # "Strength: {combat_strength}"
+        winstreak_part = parts[3].strip()   # "WinStreak: {win_streak}"
+        health_points = int(health_part.split(":")[1].strip())
+        combat_strength = int(strength_part.split(":")[1].strip())
+        win_streak = int(winstreak_part.split(":")[1].strip())
+        # Return the parsed values as a tuple
+        return (health_points, combat_strength, win_streak)
+    except Exception as e:
+        # If unable to parse, print an error message and return None
+        print("Error parsing saved hero state:", e)
+        return None
+
+def save_game(winner, hero, num_stars=0):
+    with open("save.txt", "a") as file:
+        if winner == "Hero":
+            # Increase win streak if one exists, otherwise set to 1.
+            if hasattr(hero, "win_streak"):
+                hero.win_streak += 1
+            else:
+                hero.win_streak = 1
+            # Save the hero's state on a win, in the expected format.
+            file.write(f"Hero {hero.short_name} | Health: {hero.health_points} | Strength: {hero.combat_strength} | WinStreak: {hero.win_streak}\n")
+        elif winner == "Monster":
+            # Reset win streak upon defeat, then save to file.
+            if hasattr(hero, "win_streak"):
+                hero.win_streak = 0
+            file.write(f"Hero {hero.short_name} lost. WinStreak reset to 0.\n")
+
+def name_check(short_name):
+    # Check if an entered name exists in the save file.
+    try:
+        with open("save.txt", "r") as file:
+            lines = file.readlines()
+    except FileNotFoundError:
+        return None
+
+    # Filter for lines that are win records for this hero.
+    matching_lines = [line.strip() for line in lines if line.startswith(f"Hero {short_name}")]
+    # If no matching lines, exits the function (returning false to signify that the name is available)
+    if not matching_lines:
+        return False
+    # Find the last record for the hero
+    last_record = matching_lines[-1].strip()
+    # If the last record contains "lost", then the name is free
+    if "lost" in last_record:
+        return False
+    # Otherwise, return true to indicate that a hero with that name is still alive (and thus the name is unavailable)
+    else:
+        return True
